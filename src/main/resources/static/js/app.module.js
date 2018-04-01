@@ -2,5 +2,6 @@
 
 angular.module('pki', [
 	'ui.router',
-	'header'
+	'header',
+	'create'
 ]);

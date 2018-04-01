@@ -6,7 +6,7 @@ angular.module('pki')
 			.state({
 				name: 'create',
 				url: '/create',
-				template: '<h1>Create Certificate</h1>'
+				component: 'myCreateCertificate'
 			})
 			.state({
 				name: 'get',

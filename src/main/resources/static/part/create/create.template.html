@@ -1,0 +1,105 @@
+<div class="row justify-content-center">
+	<div class="form col-auto">
+		<h2>Create a new certificate:</h2>
+		<form name="createCertificateForm">
+			<input type="number"
+			class="form-group form-control"
+			placeholder="Serial number*"
+			ng-model="$ctrl.certificate.serialNumber"
+			required/>
+			<input type="password"
+			class="form-group form-control"
+			placeholder="Password*"
+			ng-model="$ctrl.certificate.password"
+			required/>
+			<div class="form-check">
+				<input type="checkbox"
+					class="form-check-input"
+					id="isSelfSigned"
+					ng-model="$ctrl.isSelfSigned">
+				<label class="form-check-label" for="isSelfSigned">
+					Self Signed
+				</label>
+			</div>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Issuer Serial number*"
+			ng-model="$ctrl.certificate.issuerSerialNumber"
+			ng-disabled="$ctrl.isSelfSigned"
+			ng-required="!$ctrl.isSelfSigned"/>
+			<input type="password"
+			class="form-group form-control"
+			placeholder="Issuer Password*"
+			ng-model="$ctrl.certificate.issuerPassword"
+			ng-disabled="$ctrl.isSelfSigned"
+			ng-required="!$ctrl.isSelfSigned"/>
+			<div class="form-check">
+				<input type="checkbox"
+					class="form-check-input"
+					id="isCA"
+					ng-model="$ctrl.certificate.ca">
+				<label class="form-check-label" for="isCA">
+					Certificate Authority
+				</label>
+			</div>
+			<hr />
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Country Name*"
+			ng-model="$ctrl.certificate.countryName"
+			required/>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Organization Name*"
+			ng-model="$ctrl.certificate.organizationName"
+			required/>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Organizational Unit Name*"
+			ng-model="$ctrl.certificate.organizationalUnitName"
+			required/>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Common Name*"
+			ng-model="$ctrl.certificate.commonName"
+			required/>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Surname*"
+			ng-model="$ctrl.certificate.surName"
+			required/>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Given Name*"
+			ng-model="$ctrl.certificate.givenName"
+			required/>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Email Address*"
+			ng-model="$ctrl.certificate.emailAddress"
+			required/>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="UID*"
+			ng-model="$ctrl.certificate.uid"
+			required/>
+			<input type="date"
+			class="form-group form-control"
+			placeholder="From*"
+			ng-model="$ctrl.startDate"
+			required/>
+			<input type="date"
+			class="form-group form-control"
+			placeholder="To*"
+			ng-model="$ctrl.endDate"
+			required/>
+			<input type="submit"
+			class="btn btn-custom"
+			value="Create"
+			ng-click="createCertificateForm.$valid && $ctrl.send()"/>
+			<p>
+				{{$ctrl.status}}
+			</p>
+		</form>
+	</div>
+</div>

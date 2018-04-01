@@ -26,24 +26,24 @@ public class CertificateController {
 	@PostMapping("/self-signed")
 	public ResponseEntity<?> addSelfSignedCertificate(@RequestBody SubjectDataDTO input) {
 		SubjectData subject = converter.fromDTO(input);
-		Certificate cert = certificateService.addSelfSigned(subject, 
+		certificateService.addSelfSigned(subject, 
 				input.getSerialNumber(), 
 				input.getPassword());
 		
-		return new ResponseEntity<>(cert.toString(), HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PostMapping("/signed")
 	public ResponseEntity<?> addSignedCertificate(@RequestBody SubjectDataDTO input) {
 		SubjectData subject = converter.fromDTO(input);
-		Certificate cert = certificateService.addSigned(subject, 
+		certificateService.addSigned(subject, 
 				input.getSerialNumber(), 
 				input.getPassword(),
 				input.getIssuerSerialNumber(),
 				input.getIssuerPassword(),
 				input.isCA());
 		
-		return new ResponseEntity<>(cert.toString(), HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
