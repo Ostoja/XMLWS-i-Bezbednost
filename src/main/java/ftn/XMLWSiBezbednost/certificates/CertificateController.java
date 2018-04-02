@@ -1,7 +1,10 @@
 package ftn.XMLWSiBezbednost.certificates;
 
+import java.io.IOException;
+import java.security.cert.CRLException;
 import java.security.cert.Certificate;
 
+import org.bouncycastle.operator.OperatorCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ public class CertificateController {
 	private CertificateService certificateService;
 	@Autowired
 	private SubjectDataConverter converter;
+	
 
 	@PostMapping("/self-signed")
 	public ResponseEntity<?> addSelfSignedCertificate(@RequestBody SubjectDataDTO input) {
@@ -50,6 +54,18 @@ public class CertificateController {
 	public ResponseEntity<?> getCertificate(@PathVariable String id) {
 		Certificate cert = certificateService.get(id);
 		return new ResponseEntity<>(cert.toString(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/revoke")
+	public ResponseEntity<?> revokeCertificate(@RequestBody SubjectDataDTO input) throws CRLException, IOException, OperatorCreationException {
+		certificateService.revoke(input.getSerialNumber(), input.getIssuerSerialNumber(), input.getIssuerPassword());
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/valid/{id}")
+	public ResponseEntity<?> isValid(@PathVariable String id){
+		certificateService.isValid(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }
