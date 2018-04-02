@@ -3,5 +3,6 @@
 angular.module('pki', [
 	'ui.router',
 	'header',
-	'create'
+	'create',
+	'revoke'
 ]);

@@ -1,0 +1,29 @@
+<div class="row justify-content-center">
+	<div class="form col-auto">
+		<h2>Revoke a certificate:</h2>
+		<form name="revokeForm">
+			<input type="number"
+			class="form-group form-control"
+			placeholder="Issuer Serial number*"
+			ng-model="$ctrl.certificate.issuerSerialNumber"
+			required/>
+			<input type="password"
+			class="form-group form-control"
+			placeholder="Issuer Password*"
+			ng-model="$ctrl.certificate.issuerPassword"
+			required/>
+			<input type="number"
+			class="form-group form-control"
+			placeholder="Serial number*"
+			ng-model="$ctrl.certificate.serialNumber"
+			required/>
+			<input type="submit"
+			class="btn btn-custom"
+			value="Revoke"
+			ng-click="revokeForm.$valid && $ctrl.send()"/>
+			<p>
+				{{$ctrl.status}}
+			</p>
+		</form>
+	</div>
+</div>

@@ -11,4 +11,7 @@ angular.module('core.certificate')
 		this.getCertificate = (id) => {
 			return $http.get(`/api/certificates/${id}`);
 		};
+		this.revoke = (data) => {
+			return $http.post('/api/certificates/revoke', data)
+		}
 	});
