@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-	<div class="form col-auto">
+	<div class="form col-md-auto">
 		<h2>Create a new certificate:</h2>
 		<form name="createCertificateForm">
 			<input type="number"
@@ -12,7 +12,7 @@
 			placeholder="Password*"
 			ng-model="$ctrl.certificate.password"
 			required/>
-			<div class="form-check">
+			<div class="form-group form-check">
 				<input type="checkbox"
 					class="form-check-input"
 					id="isSelfSigned"
@@ -33,11 +33,12 @@
 			ng-model="$ctrl.certificate.issuerPassword"
 			ng-disabled="$ctrl.isSelfSigned"
 			ng-required="!$ctrl.isSelfSigned"/>
-			<div class="form-check">
+			<div class="form-group form-check">
 				<input type="checkbox"
 					class="form-check-input"
 					id="isCA"
-					ng-model="$ctrl.certificate.ca">
+					ng-model="$ctrl.certificate.ca"
+					ng-disabled="$ctrl.isSelfSigned">
 				<label class="form-check-label" for="isCA">
 					Certificate Authority
 				</label>
@@ -83,13 +84,17 @@
 			placeholder="UID*"
 			ng-model="$ctrl.certificate.uid"
 			required/>
+			<label for="fromDate">From*</label>
 			<input type="date"
 			class="form-group form-control"
+			id="fromDate"
 			placeholder="From*"
 			ng-model="$ctrl.startDate"
 			required/>
+			<label for="toDate">To*</label>
 			<input type="date"
 			class="form-group form-control"
+			id="toDate"
 			placeholder="To*"
 			ng-model="$ctrl.endDate"
 			required/>
