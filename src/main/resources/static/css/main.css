@@ -66,3 +66,8 @@ my-header .navbar-brand {
 	color: var(--selected_fg_color);
 	background-color: var(--selected_bg_color);
 }
+
+.cert-display {
+	word-wrap: break-word;
+	font-family: monospace;
+}

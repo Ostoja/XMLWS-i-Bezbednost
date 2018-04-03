@@ -6,7 +6,7 @@
 
 	<groupId>ftn</groupId>
 	<artifactId>XMLWS-i-Bezbednost</artifactId>
-	<version>0.5</version>
+	<version>0.9</version>
 	<packaging>jar</packaging>
 
 	<name>XMLWS-i-Bezbednost</name>

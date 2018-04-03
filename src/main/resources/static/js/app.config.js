@@ -11,7 +11,7 @@ angular.module('pki')
 			.state({
 				name: 'get',
 				url: '/get',
-				template: '<h1>Get Certificate</h1>'
+				component: 'myGetCertificate'
 			})
 			.state({
 				name: 'revoke',

@@ -3,11 +3,14 @@ package ftn.XMLWSiBezbednost.certificates;
 import java.io.IOException;
 import java.security.cert.CRLException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
+import java.util.HashMap;
 
 import org.bouncycastle.operator.OperatorCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,9 +54,11 @@ public class CertificateController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getCertificate(@PathVariable String id) {
+	public ResponseEntity<?> getCertificate(@PathVariable String id) throws CertificateEncodingException {
 		Certificate cert = certificateService.get(id);
-		return new ResponseEntity<>(cert.toString(), HttpStatus.OK);
+		HashMap<String, String> response = new HashMap<>(); 
+		response.put("certificate", Base64Utils.encodeToString(cert.getEncoded()));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	@PostMapping("/revoke")
