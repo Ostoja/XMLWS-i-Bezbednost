@@ -1,8 +1,7 @@
 <div class="row justify-content-center">
-	<div class="form col-md-auto">
-		<h2>Revoke a certificate:</h2>
-		<form name="revokeForm">
-			
+	<div class="form col-md-4">
+		<h2>Check status of a certificate:</h2>
+		<form name="statusCertificateForm">
 			<input type="number"
 			class="form-group form-control"
 			placeholder="Serial number*"
@@ -10,10 +9,13 @@
 			required/>
 			<input type="submit"
 			class="btn btn-custom"
-			value="Revoke"
-			ng-click="revokeForm.$valid && $ctrl.send()"/>
+			value="Check"
+			ng-click="statusCertificateForm.$valid && $ctrl.send()"/>
 			<p>
 				{{$ctrl.status}}
+			</p>
+			<p class="cert-display">
+				{{$ctrl.certificate}}
 			</p>
 		</form>
 	</div>

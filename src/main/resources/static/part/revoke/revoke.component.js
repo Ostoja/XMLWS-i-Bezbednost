@@ -5,7 +5,7 @@ angular.module('revoke')
 		templateUrl: '/part/revoke/revoke.template.html',
 		controller: function(CertificateService) {
 			this.send = () => {
-				CertificateService.revoke(this.certificate)
+				CertificateService.revoke(this.id)
 					.then( () => {
 						this.status = 'Certificate revoked successfully';
 					}, () => {

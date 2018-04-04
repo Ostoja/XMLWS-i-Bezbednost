@@ -5,5 +5,6 @@ angular.module('pki', [
 	'header',
 	'create',
 	'get',
-	'revoke'
+	'revoke',
+	'status'
 ]);

@@ -21,7 +21,7 @@ angular.module('pki')
 			.state({
 				name: 'status',
 				url: '/status',
-				template: '<h1>Check Certificate Status</h1>'
+				component: 'myStatus'
 			})
 			.state({
 				name: 'error',

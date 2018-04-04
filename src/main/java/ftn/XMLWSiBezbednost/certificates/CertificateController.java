@@ -14,6 +14,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,16 +62,23 @@ public class CertificateController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/revoke")
-	public ResponseEntity<?> revokeCertificate(@RequestBody SubjectDataDTO input) throws CRLException, IOException, OperatorCreationException {
-		certificateService.revoke(input.getSerialNumber(), input.getIssuerSerialNumber(), input.getIssuerPassword());
+	@PutMapping("/revoke/{id}")
+	public ResponseEntity<?> revokeCertificate(@PathVariable String id) throws CRLException, IOException, OperatorCreationException {
+		certificateService.revoke(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/valid/{id}")
-	public ResponseEntity<?> isValid(@PathVariable String id){
-		certificateService.isValid(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<?> isValid(@PathVariable String id) throws ClassNotFoundException, IOException{
+		boolean valid = certificateService.isValid(id);
+		HashMap<String, String> response = new HashMap<>(); 
+		if(valid) {
+			response.put("valid", "Certificate is valid" );
+		}
+		else {
+			response.put("valid", "Certificate is invalid" );
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

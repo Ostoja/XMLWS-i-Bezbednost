@@ -1,6 +1,10 @@
 package ftn.XMLWSiBezbednost.certificates;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -16,12 +20,14 @@ import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.security.auth.x500.X500Principal;
 
 import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ocsp.OCSPRequest;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.CRLNumber;
 import org.bouncycastle.asn1.x509.CRLReason;
@@ -78,6 +84,9 @@ public class CertificateServiceImpl implements CertificateService {
 		
 		X509Certificate cert = certificateGenerator.generateCertificate(subject, issuer, true);
 		keyStoreWriter.write(alias, keyPairSubject.getPrivate(), password.toCharArray(), cert);
+		System.out.println(cert.toString());
+		System.out.println("AAAAAAA");
+		System.out.println(issuer.toString());
 		return cert;
 	}
 
@@ -98,6 +107,9 @@ public class CertificateServiceImpl implements CertificateService {
 		
 		X509Certificate cert = certificateGenerator.generateCertificate(subject, issuer, isCA);
 		keyStoreWriter.write(alias, keyPairSubject.getPrivate(), password.toCharArray(), cert);
+		System.out.println(cert.toString());
+		System.out.println("AAAAAAA");
+		System.out.println(issuer.toString());
 		return cert;
 	}
 
@@ -109,16 +121,23 @@ public class CertificateServiceImpl implements CertificateService {
 	}
 
 	@Override
-	public Certificate revoke(String serialNumber, String issuerAlias, String issuerPassword) throws CRLException, IOException, OperatorCreationException {
+	public Certificate revoke(String serialNumber) throws CRLException, IOException, OperatorCreationException {
 		X509Certificate cert = (X509Certificate) keyStoreReader.readCertificate(keyStoreFile, keyStorePassword, serialNumber);
 		X509CRL crl = CRLUtils.openFromFile(crlFile);
+		System.out.println(cert.toString());
+		//X509Certificate issuerCert = (X509Certificate) keyStoreReader.readCertificate(keyStoreFile, keyStorePassword, cert.getIssuerX500Principal().getName());
+		FileOutputStream fos = new FileOutputStream(crlFile);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(cert);
+		oos.close();
 		
+		return cert;
 		
-		
+		/*
 		IssuerData issuer = keyStoreReader.readIssuerFromStore(keyStoreFile, 
-				issuerAlias, 
+				cert.getIssuerX500Principal().getName(), 
 				keyStorePassword.toCharArray(), 
-				issuerPassword.toCharArray());
+				issuerCert.getPublicKey().toString().toCharArray());
 		//PrivateKey pk = keyStoreReader.readPrivateKey(keyStoreFile, keyStorePassword, alias, pass)
 		PrivateKey pk = issuer.getPrivateKey();
 		
@@ -186,19 +205,22 @@ public class CertificateServiceImpl implements CertificateService {
 		X509CRLHolder holder = crlBuilder.build(contentSigner);
 		JcaX509CRLConverter cnv = new JcaX509CRLConverter();
 		cnv.setProvider("BC");
-		X509CRL newCRL = cnv.getCRL(holder);					
-		
+		X509CRL newCRL = cnv.getCRL(holder);
 		CRLUtils.saveCRLfile(crlFile, newCRL);
 		return cert ;
+		*/
 	}
 
 	@Override
-	public boolean isValid(String serialNumber) {
+	public boolean isValid(String serialNumber) throws IOException, ClassNotFoundException {
 		X509Certificate cert = (X509Certificate) keyStoreReader.readCertificate(keyStoreFile, keyStorePassword, serialNumber);
-		X509CRL crl = CRLUtils.openFromFile(crlFile);
+		//X509CRL crl = CRLUtils.openFromFile(crlFile);
+		FileInputStream fos = new FileInputStream(crlFile);
+		ObjectInputStream oos = new ObjectInputStream(fos);
+		ArrayList<X509Certificate> listCert = (ArrayList<X509Certificate>) oos.readObject();
 		try {
 		cert.checkValidity();
-		if(crl.isRevoked(cert))
+		if(listCert.contains(cert))
 			return false;
 		else
 			return true;
@@ -210,5 +232,6 @@ public class CertificateServiceImpl implements CertificateService {
 			return false;
 		}
 	}
+	
 
 }
