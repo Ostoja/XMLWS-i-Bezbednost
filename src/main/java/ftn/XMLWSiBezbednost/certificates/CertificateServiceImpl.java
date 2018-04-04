@@ -123,7 +123,7 @@ public class CertificateServiceImpl implements CertificateService {
 	@Override
 	public Certificate revoke(String serialNumber) throws CRLException, IOException, OperatorCreationException {
 		X509Certificate cert = (X509Certificate) keyStoreReader.readCertificate(keyStoreFile, keyStorePassword, serialNumber);
-		X509CRL crl = CRLUtils.openFromFile(crlFile);
+		//X509CRL crl = CRLUtils.openFromFile(crlFile);
 		System.out.println(cert.toString());
 		//X509Certificate issuerCert = (X509Certificate) keyStoreReader.readCertificate(keyStoreFile, keyStorePassword, cert.getIssuerX500Principal().getName());
 		FileOutputStream fos = new FileOutputStream(crlFile);
@@ -218,6 +218,7 @@ public class CertificateServiceImpl implements CertificateService {
 		FileInputStream fos = new FileInputStream(crlFile);
 		ObjectInputStream oos = new ObjectInputStream(fos);
 		ArrayList<X509Certificate> listCert = (ArrayList<X509Certificate>) oos.readObject();
+		oos.close();
 		try {
 		cert.checkValidity();
 		if(listCert.contains(cert))

@@ -12,9 +12,9 @@ angular.module('core.certificate')
 			return $http.get(`/api/certificates/${id}`);
 		};
 		this.revoke = (id) => {
-			return $http.put('/api/certificates/revoke/${id}')
+			return $http.put(`/api/certificates/revoke/${id}`)
 		}
 		this.isValid = (id) => {
-			return $http.get('/api/certificates/valid/${id}')
+			return $http.get(`/api/certificates/valid/${id}`)
 		}
 	});
