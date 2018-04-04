@@ -121,14 +121,24 @@ public class CertificateServiceImpl implements CertificateService {
 	}
 
 	@Override
-	public Certificate revoke(String serialNumber) throws CRLException, IOException, OperatorCreationException {
+	public Certificate revoke(String serialNumber) throws CRLException, IOException, OperatorCreationException, ClassNotFoundException {
 		X509Certificate cert = (X509Certificate) keyStoreReader.readCertificate(keyStoreFile, keyStorePassword, serialNumber);
 		//X509CRL crl = CRLUtils.openFromFile(crlFile);
 		System.out.println(cert.toString());
 		//X509Certificate issuerCert = (X509Certificate) keyStoreReader.readCertificate(keyStoreFile, keyStorePassword, cert.getIssuerX500Principal().getName());
+		ArrayList<X509Certificate> listCert = new ArrayList<>();
+		try {
+		FileInputStream fis = new FileInputStream(crlFile);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		listCert = (ArrayList<X509Certificate>) ois.readObject();
+		}
+		catch(Exception e) {
+			System.out.println("ERRROR");
+		}
+		listCert.add(cert);
 		FileOutputStream fos = new FileOutputStream(crlFile);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(cert);
+		oos.writeObject(listCert);
 		oos.close();
 		
 		return cert;

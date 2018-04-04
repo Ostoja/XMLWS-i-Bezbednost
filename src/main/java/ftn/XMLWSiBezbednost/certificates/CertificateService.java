@@ -21,5 +21,5 @@ public interface CertificateService {
 			boolean isCA);
 	Certificate get(String serialNumber);
 	boolean isValid(String serialNumber) throws IOException, ClassNotFoundException;
-	Certificate revoke(String serialNumber) throws CRLException, IOException, OperatorCreationException;
+	Certificate revoke(String serialNumber) throws CRLException, IOException, OperatorCreationException, ClassNotFoundException;
 }

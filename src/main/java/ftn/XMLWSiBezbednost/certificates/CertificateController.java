@@ -63,7 +63,7 @@ public class CertificateController {
 	}
 	
 	@PutMapping("/revoke/{id}")
-	public ResponseEntity<?> revokeCertificate(@PathVariable String id) throws CRLException, IOException, OperatorCreationException {
+	public ResponseEntity<?> revokeCertificate(@PathVariable String id) throws CRLException, IOException, OperatorCreationException, ClassNotFoundException {
 		certificateService.revoke(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
