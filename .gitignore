@@ -1,5 +1,6 @@
 /crlfile
 /keystore
+/*.jks
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

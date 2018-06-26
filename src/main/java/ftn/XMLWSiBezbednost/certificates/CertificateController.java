@@ -29,49 +29,55 @@ public class CertificateController {
 	private CertificateService certificateService;
 	@Autowired
 	private SubjectDataConverter converter;
-	
+
 
 	@PostMapping("/self-signed")
 	public ResponseEntity<?> addSelfSignedCertificate(@RequestBody SubjectDataDTO input) {
 		SubjectData subject = converter.fromDTO(input);
-		certificateService.addSelfSigned(subject, 
-				input.getSerialNumber(), 
+		certificateService.addSelfSigned(subject,
+				input.getKeyStoreFile(),
+				input.getSerialNumber(),
 				input.getPassword());
-		
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@PostMapping("/signed")
 	public ResponseEntity<?> addSignedCertificate(@RequestBody SubjectDataDTO input) {
 		SubjectData subject = converter.fromDTO(input);
-		certificateService.addSigned(subject, 
-				input.getSerialNumber(), 
+		certificateService.addSigned(subject,
+				input.getKeyStoreFile(),
+				input.getSerialNumber(),
 				input.getPassword(),
+				input.getIssuerKeyStoreFile(),
 				input.getIssuerSerialNumber(),
 				input.getIssuerPassword(),
 				input.isCA());
-		
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getCertificate(@PathVariable String id) throws CertificateEncodingException {
-		Certificate cert = certificateService.get(id);
-		HashMap<String, String> response = new HashMap<>(); 
+	@GetMapping("/store/{keyStoreFile}/cert/{id}")
+	public ResponseEntity<?> getCertificate(@PathVariable String keyStoreFile,
+			@PathVariable String id) throws CertificateEncodingException {
+		Certificate cert = certificateService.get(keyStoreFile + ".jks", id);
+		HashMap<String, String> response = new HashMap<>();
 		response.put("certificate", Base64Utils.encodeToString(cert.getEncoded()));
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	@PutMapping("/revoke/{id}")
-	public ResponseEntity<?> revokeCertificate(@PathVariable String id) throws CRLException, IOException, OperatorCreationException, ClassNotFoundException {
-		certificateService.revoke(id);
+
+	@PutMapping("/revoke/store/{keyStoreFile}/cert/{id}")
+	public ResponseEntity<?> revokeCertificate(@PathVariable String keyStoreFile,
+			@PathVariable String id) throws CRLException, IOException, OperatorCreationException, ClassNotFoundException {
+		certificateService.revoke(keyStoreFile + ".jks", id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	@GetMapping("/valid/{id}")
-	public ResponseEntity<?> isValid(@PathVariable String id) throws ClassNotFoundException, IOException{
-		boolean valid = certificateService.isValid(id);
-		HashMap<String, String> response = new HashMap<>(); 
+
+	@GetMapping("/valid/store/{keyStoreFile}/cert/{id}")
+	public ResponseEntity<?> isValid(@PathVariable String keyStoreFile,
+			@PathVariable String id) throws ClassNotFoundException, IOException{
+		boolean valid = certificateService.isValid(keyStoreFile + ".jks", id);
+		HashMap<String, String> response = new HashMap<>();
 		if(valid) {
 			response.put("valid", "Certificate is valid" );
 		}

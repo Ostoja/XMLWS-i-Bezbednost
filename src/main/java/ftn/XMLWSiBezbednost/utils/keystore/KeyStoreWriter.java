@@ -1,6 +1,5 @@
 package ftn.XMLWSiBezbednost.utils.keystore;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,8 +12,6 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,12 +23,10 @@ public class KeyStoreWriter {
 	// - Privatni kljucevi
 	// - Tajni kljucevi, koji se koriste u simetricnima siframa
 	private KeyStore keyStore;
-	
-	@Value("${keyStore.file}")
-	private String keyStoreFile;
+
 	@Value("${keyStore.password}")
 	private String keyStorePassword;
-	
+
 	public KeyStoreWriter() {
 		try {
 			keyStore = KeyStore.getInstance("JKS", "SUN");
@@ -41,16 +36,7 @@ public class KeyStoreWriter {
 			e.printStackTrace();
 		}
 	}
-	
-	@PostConstruct
-	private void init()
-	{
-		if(new File(keyStoreFile).exists())
-			loadKeyStore(keyStoreFile, keyStorePassword.toCharArray());
-		else
-			loadKeyStore(null, keyStorePassword.toCharArray());
-	}
-	
+
 	private void loadKeyStore(String fileName, char[] password) {
 		try {
 			if(fileName != null) {
@@ -64,12 +50,12 @@ public class KeyStoreWriter {
 		} catch (CertificateException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			loadKeyStore(null, password);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void saveKeyStore(String fileName, char[] password) {
 		try {
 			keyStore.store(new FileOutputStream(fileName), password);
@@ -85,10 +71,15 @@ public class KeyStoreWriter {
 			e.printStackTrace();
 		}
 	}
-	
-	public void write(String alias, PrivateKey privateKey, char[] password, Certificate certificate) {
+
+	public void write(String keyStoreFile,
+			String alias,
+			PrivateKey privateKey,
+			char[] keyPassword,
+			Certificate certificate) {
 		try {
-			keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
+			loadKeyStore(keyStoreFile, keyStorePassword.toCharArray());
+			keyStore.setKeyEntry(alias, privateKey, keyPassword, new Certificate[] {certificate});
 			saveKeyStore(keyStoreFile, keyStorePassword.toCharArray());
 		} catch (KeyStoreException e) {
 			e.printStackTrace();

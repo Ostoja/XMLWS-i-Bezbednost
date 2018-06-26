@@ -1,7 +1,9 @@
 package ftn.XMLWSiBezbednost.certificates;
 
 public class SubjectDataDTO {
-	
+	private String keyStoreFile;
+	private String issuerKeyStoreFile;
+
 	private String countryName;
 	private String organizationName;
 	private String organizationalUnitName;
@@ -10,29 +12,33 @@ public class SubjectDataDTO {
 	private String givenName;
 	private String emailAddress;
 	private String uid;
-	
+
 	private String serialNumber;
 	private Long startTimestamp;
 	private Long endTimestamp;
-	
+
 	private String password;
 	private String issuerSerialNumber;
 	private String issuerPassword;
 	private boolean isCA;
-	
+
 	public SubjectDataDTO() {}
-	
-	public SubjectDataDTO(String countryName,
-			String organizationName, 
+
+	public SubjectDataDTO(String keyStoreFile,
+			String issuerKeyStoreFile,
+			String countryName,
+			String organizationName,
 			String organizationalUnitName,
 			String commonName,
 			String surName,
-			String givenName, 
-			String emailAddress, 
+			String givenName,
+			String emailAddress,
 			String uid,
 			String serialNumber,
 			Long startTimestamp,
 			Long endTimestamp) {
+		this.keyStoreFile = keyStoreFile;
+		this.issuerKeyStoreFile = issuerKeyStoreFile;
 		this.countryName = countryName;
 		this.organizationName = organizationName;
 		this.organizationalUnitName = organizationalUnitName;
@@ -44,6 +50,22 @@ public class SubjectDataDTO {
 		this.serialNumber = serialNumber;
 		this.startTimestamp = startTimestamp;
 		this.endTimestamp = endTimestamp;
+	}
+
+	public String getKeyStoreFile() {
+		return keyStoreFile + ".jks";
+	}
+
+	public void setKeyStoreFile(String keyStoreFile) {
+		this.keyStoreFile = keyStoreFile;
+	}
+
+	public String getIssuerKeyStoreFile() {
+		return issuerKeyStoreFile + ".jks";
+	}
+
+	public void setIssuerKeyStoreFile(String issuerKeyStoreFile) {
+		this.issuerKeyStoreFile = issuerKeyStoreFile;
 	}
 
 	public String getCountryName() {
@@ -165,5 +187,5 @@ public class SubjectDataDTO {
 	public void setCA(boolean isCA) {
 		this.isCA = isCA;
 	}
-	
+
 }
