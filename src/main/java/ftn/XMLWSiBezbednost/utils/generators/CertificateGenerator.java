@@ -5,8 +5,10 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
@@ -23,7 +25,7 @@ import ftn.XMLWSiBezbednost.utils.data.SubjectData;
 @Component
 public class CertificateGenerator {
 	public CertificateGenerator() {}
-	
+
 	public X509Certificate generateCertificate(SubjectData subjectData,
 			IssuerData issuerData,
 			boolean isCA) {
@@ -39,7 +41,7 @@ public class CertificateGenerator {
 			ContentSigner contentSigner = builder.build(issuerData.getPrivateKey());
 
 			//Postavljaju se podaci za generisanje sertifiakta
-			X509v3CertificateBuilder certGen = 
+			X509v3CertificateBuilder certGen =
 					new JcaX509v3CertificateBuilder(issuerData.getX500name(),
 						new BigInteger(subjectData.getSerialNumber()),
 						subjectData.getStartDate(),
@@ -47,9 +49,17 @@ public class CertificateGenerator {
 						subjectData.getX500name(),
 						subjectData.getPublicKey())
 					.addExtension(
-					        new ASN1ObjectIdentifier("2.5.29.19"), 
-					        false,
-					        new BasicConstraints(isCA));
+							Extension.basicConstraints,
+							true,
+							new BasicConstraints(isCA))
+					.addExtension(Extension.authorityInfoAccess,
+							false,
+							new GeneralName(GeneralName.uniformResourceIdentifier,
+									new DERIA5String("http://localhost:8000/api/certificates/")))
+					.addExtension(Extension.cRLDistributionPoints,
+							false,
+							new GeneralName(GeneralName.uniformResourceIdentifier,
+									new DERIA5String("http://localhost:8000/api/certificates/valid/")));
 			//Generise se sertifikat
 			X509CertificateHolder certHolder = certGen.build(contentSigner);
 
