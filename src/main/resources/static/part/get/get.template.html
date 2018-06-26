@@ -8,7 +8,7 @@
 			ng-model="$ctrl.id"
 			required/>
 			<input type="submit"
-			class="btn btn-custom"
+			class="btn btn-custom mb-3"
 			value="Get"
 			ng-click="getCertificateForm.$valid && $ctrl.send()"/>
 			<p>
@@ -17,6 +17,12 @@
 			<p class="cert-display">
 				{{$ctrl.certificate}}
 			</p>
+			<a class="btn btn-custom"
+				ng-if="$ctrl.certificate"
+				ng-href="data:application/x-x509-user-cert;base64,{{$ctrl.certificate}}"
+				download="certificate.crt">
+					Download certificate
+			</a>
 		</form>
 	</div>
 </div>

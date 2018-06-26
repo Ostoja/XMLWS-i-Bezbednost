@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pki')
-	.config(function($stateProvider, $urlRouterProvider) {
+	.config(function($stateProvider, $urlRouterProvider, $compileProvider) {
 		$stateProvider
 			.state({
 				name: 'create',
@@ -33,4 +33,6 @@ angular.module('pki')
 			.when('', '/create')
 			.when('/', '/create')
 			.otherwise('/error');
+
+		$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|s?ftp|mailto|tel|file|data):/);
 	})
