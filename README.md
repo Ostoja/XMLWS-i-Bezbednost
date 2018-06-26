@@ -14,5 +14,5 @@ PKI
 java -jar target/*.jar
 ```
 
-Server listens on port `8080` by default.
+Server listens on port `8000` by default.
 Use command line option `--server.port=` to change it.
