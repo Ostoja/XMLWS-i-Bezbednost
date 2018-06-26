@@ -2,6 +2,12 @@
 	<div class="form col-md-auto">
 		<h2>Create a new certificate:</h2>
 		<form name="createCertificateForm">
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Keystore*"
+			ng-model="$ctrl.certificate.keyStoreFile"
+			required
+			autofocus/>
 			<input type="number"
 			class="form-group form-control"
 			placeholder="Serial number*"
@@ -21,6 +27,12 @@
 					Self Signed
 				</label>
 			</div>
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Issuer keystore*"
+			ng-model="$ctrl.certificate.issuerKeyStoreFile"
+			ng-disabled="$ctrl.isSelfSigned"
+			ng-required="!$ctrl.isSelfSigned"/>
 			<input type="number"
 			class="form-group form-control"
 			placeholder="Issuer Serial number*"

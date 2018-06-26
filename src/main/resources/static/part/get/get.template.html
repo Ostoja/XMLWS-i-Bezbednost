@@ -2,6 +2,12 @@
 	<div class="form col-md-4">
 		<h2>Retrieve an existing certificate:</h2>
 		<form name="getCertificateForm">
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Keystore*"
+			ng-model="$ctrl.store"
+			required
+			autofocus/>
 			<input type="number"
 			class="form-group form-control"
 			placeholder="Serial number*"

@@ -8,13 +8,13 @@ angular.module('core.certificate')
 		this.sign = (data) => {
 			return $http.post('/api/certificates/signed', data);
 		};
-		this.getCertificate = (id) => {
-			return $http.get(`/api/certificates/${id}`);
+		this.getCertificate = (store, id) => {
+			return $http.get(`/api/certificates/store/${store}/cert/${id}`);
 		};
-		this.revoke = (id) => {
-			return $http.put(`/api/certificates/revoke/${id}`)
+		this.revoke = (store, id) => {
+			return $http.put(`/api/certificates/revoke/store/${store}/cert/${id}`);
 		}
-		this.isValid = (id) => {
-			return $http.get(`/api/certificates/valid/${id}`)
+		this.isValid = (store, id) => {
+			return $http.get(`/api/certificates/valid/store/${store}/cert/${id}`);
 		}
 	});

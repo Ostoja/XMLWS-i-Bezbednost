@@ -2,7 +2,12 @@
 	<div class="form col-md-auto">
 		<h2>Revoke a certificate:</h2>
 		<form name="revokeForm">
-			
+			<input type="text"
+			class="form-group form-control"
+			placeholder="Keystore*"
+			ng-model="$ctrl.store"
+			required
+			autofocus/>
 			<input type="number"
 			class="form-group form-control"
 			placeholder="Serial number*"

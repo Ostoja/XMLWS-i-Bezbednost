@@ -5,7 +5,7 @@ angular.module('get')
 		templateUrl: '/part/get/get.template.html',
 		controller: function(CertificateService) {
 			this.send = () => {
-				CertificateService.getCertificate(this.id)
+				CertificateService.getCertificate(this.store, this.id)
 					.then( (response) => {
 						this.status = 'Certificate retrieved successfully';
 						this.certificate = response.data.certificate;

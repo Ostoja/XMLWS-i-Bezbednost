@@ -5,7 +5,7 @@ angular.module('status')
 		templateUrl: '/part/status/status.template.html',
 		controller: function(CertificateService) {
 			this.send = () => {
-				CertificateService.isValid(this.id)
+				CertificateService.isValid(this.store, this.id)
 					.then( (response) => {
 						this.status = 'Status is ';
 						this.certificate = response.data.valid;
